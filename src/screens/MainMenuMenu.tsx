@@ -5,25 +5,18 @@
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
 // 3. Wire interactive controls through the typed actions prop
+// 4. Replace placeholder data with props/state
 
-import { Circle, HelpCircle, Settings } from "lucide-react";
+import { Circle, Settings } from "lucide-react";
 
 
 export type MainMenuMenuActionId = "start-game-1" | "resume-2" | "options-3" | "help-4";
 
 export interface MainMenuMenuProps {
   actions?: Partial<Record<MainMenuMenuActionId, () => void>>;
-  highScore?: number;
-  resumeAvailable?: boolean;
 }
 
-const formatScore = (score = 0) =>
-  Math.max(0, Math.floor(score)).toLocaleString("en-US", {
-    minimumIntegerDigits: 6,
-    useGrouping: true,
-  });
-
-export function MainMenuMenu({ actions, highScore = 0, resumeAvailable = false }: MainMenuMenuProps) {
+export function MainMenuMenu({ actions }: MainMenuMenuProps) {
   return (
     <>
       {/* Background Effects */}
@@ -49,7 +42,7 @@ export function MainMenuMenu({ actions, highScore = 0, resumeAvailable = false }
                       START GAME
                   </button>
       {/* RESUME: Outline */}
-      <button className="w-full min-h-touch-target-min flex items-center justify-center bg-transparent text-primary border border-primary font-label-sm text-label-sm uppercase tracking-widest px-6 py-4 hover:drop-shadow-[0_0_10px_#4cd7f6] transition-colors duration-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background" type="button" data-action-id="resume-2" onClick={actions?.["resume-2"]} disabled={!resumeAvailable} aria-disabled={!resumeAvailable}>
+      <button className="w-full min-h-touch-target-min flex items-center justify-center bg-transparent text-primary border border-primary font-label-sm text-label-sm uppercase tracking-widest px-6 py-4 hover:drop-shadow-[0_0_10px_#4cd7f6] transition-colors duration-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background" type="button" data-action-id="resume-2" onClick={actions?.["resume-2"]}>
                       RESUME
                   </button>
       {/* OPTIONS: Outline with Icon */}
@@ -59,7 +52,7 @@ export function MainMenuMenu({ actions, highScore = 0, resumeAvailable = false }
                   </button>
       {/* HELP: Outline with Icon */}
       <button className="w-full min-h-touch-target-min flex items-center justify-center gap-3 bg-transparent text-primary border border-primary font-label-sm text-label-sm uppercase tracking-widest px-6 py-4 hover:drop-shadow-[0_0_10px_#4cd7f6] transition-colors duration-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background" type="button" data-action-id="help-4" onClick={actions?.["help-4"]}>
-      <HelpCircle  style={{fontVariationSettings: "'FILL' 0"}} aria-hidden={true} focusable="false" />
+      <Circle  style={{fontVariationSettings: "'FILL' 0"}} aria-hidden={true} focusable="false" />
                       HELP
                   </button>
       </div>
@@ -68,7 +61,7 @@ export function MainMenuMenu({ actions, highScore = 0, resumeAvailable = false }
       <footer className="w-full flex justify-center pb-margin pt-8 relative z-10">
       <div className="bg-surface-container-highest border border-outline-variant px-4 py-2 flex items-center gap-2 drop-shadow-[0_0_4px_#4cd7f6]">
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="text-primary text-sm" aria-hidden={true} focusable="false" />
-      <span className="font-label-xs text-label-xs text-primary uppercase tracking-widest">HIGH SCORE: {formatScore(highScore)}</span>
+      <span className="font-label-xs text-label-xs text-primary uppercase tracking-widest">HIGH SCORE: 5000</span>
       </div>
       </footer>
     </>
