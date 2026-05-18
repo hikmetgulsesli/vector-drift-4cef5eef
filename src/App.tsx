@@ -72,14 +72,24 @@ function GameHud() {
 
 function ScreenBridge() {
   const { state, actions } = useAppContext();
+  const handleMenuClickCapture = (event: React.MouseEvent<HTMLElement>) => {
+    if (state.status !== 'paused') return;
+
+    const target = event.target instanceof HTMLElement ? event.target : null;
+    const button = target?.closest('button');
+    if (button?.textContent?.trim().toLowerCase() === 'resume') {
+      actions.resumeGame();
+    }
+  };
 
   if (state.screen === 'settings') {
     return (
       <GameOptionsSettings
+        settings={state.settings}
         actions={{
           'button-1-1': actions.openMenu,
-          'button-2-2': actions.openHelp,
-          'button-3-3': actions.startGame,
+          'button-2-2': actions.toggleBackgroundMusic,
+          'button-3-3': actions.toggleSoundEffects,
           'easy-4': () => actions.setDifficulty('easy'),
           'normal-5': () => actions.setDifficulty('normal'),
           'hard-6': () => actions.setDifficulty('hard'),
@@ -97,11 +107,6 @@ function ScreenBridge() {
     return (
       <>
         <GameBoardPlay
-          elapsedMs={state.elapsedMs}
-          highScore={state.highScore}
-          obstacles={state.obstacles}
-          playerLane={state.playerLane}
-          score={state.score}
           actions={{
             'button-1-1': actions.openSettings,
             'button-2-2': actions.openHelp,
@@ -137,11 +142,6 @@ function ScreenBridge() {
     return (
       <>
         <GameBoardPlay
-          elapsedMs={state.elapsedMs}
-          highScore={state.highScore}
-          obstacles={state.obstacles}
-          playerLane={state.playerLane}
-          score={state.score}
           actions={{
             'button-1-1': actions.openSettings,
             'button-2-2': actions.openHelp,
@@ -154,16 +154,16 @@ function ScreenBridge() {
   }
 
   return (
-    <MainMenuMenu
-      highScore={state.highScore}
-      resumeAvailable={state.status === 'paused'}
-      actions={{
-        'start-game-1': actions.startGame,
-        'resume-2': actions.resumeGame,
-        'options-3': actions.openSettings,
-        'help-4': actions.openHelp,
-      }}
-    />
+    <section onClickCapture={handleMenuClickCapture}>
+      <MainMenuMenu
+        actions={{
+          'start-game-1': actions.startGame,
+          'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,
+          'options-3': actions.openSettings,
+          'help-4': actions.openHelp,
+        }}
+      />
+    </section>
   );
 }
 

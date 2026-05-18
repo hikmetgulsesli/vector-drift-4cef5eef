@@ -6,6 +6,51 @@ import App from '../App';
 
 afterEach(() => {
   cleanup();
+  window.localStorage.clear();
+});
+
+describe('options screen settings', () => {
+  it('toggles audio settings and persists them from the generated options screen', () => {
+    render(createElement(App));
+
+    act(() => {
+      window.app?.actions.openSettings();
+    });
+
+    const backgroundMusic = screen.getByRole('button', { name: /toggle background music/i });
+    const soundEffects = screen.getByRole('button', { name: /toggle sound effects/i });
+
+    expect(backgroundMusic).toHaveAttribute('aria-pressed', 'true');
+    expect(soundEffects).toHaveAttribute('aria-pressed', 'true');
+
+    act(() => {
+      backgroundMusic.click();
+      soundEffects.click();
+    });
+
+    expect(window.app?.state.settings.backgroundMusic).toBe(false);
+    expect(window.app?.state.settings.soundEffects).toBe(false);
+    expect(window.localStorage.getItem('vector-drift:background-music')).toBe('false');
+    expect(window.localStorage.getItem('vector-drift:sound-effects')).toBe('false');
+  });
+
+  it('updates difficulty without resetting audio preferences', () => {
+    render(createElement(App));
+
+    act(() => {
+      window.app?.actions.openSettings();
+    });
+
+    act(() => {
+      window.app?.actions.toggleBackgroundMusic();
+      screen.getByRole('button', { name: 'HARD' }).click();
+    });
+
+    expect(window.app?.state.settings.difficulty).toBe('hard');
+    expect(window.app?.state.settings.backgroundMusic).toBe(false);
+    expect(window.app?.state.settings.soundEffects).toBe(true);
+    expect(window.localStorage.getItem('vector-drift:difficulty')).toBe('hard');
+  });
 });
 
 describe('paused movement guard', () => {
@@ -74,6 +119,26 @@ describe('game loop regressions', () => {
     });
 
     expect(window.app?.state.score).toBe(helpScore);
+  });
+
+  it('resumes a paused run from the main menu resume action', () => {
+    render(createElement(App));
+
+    act(() => {
+      window.app?.actions.startGame();
+      window.app?.actions.pauseGame();
+      window.app?.actions.openMenu();
+    });
+
+    expect(window.app?.state.screen).toBe('menu');
+    expect(window.app?.state.status).toBe('paused');
+
+    act(() => {
+      screen.getByRole('button', { name: /resume/i }).click();
+    });
+
+    expect(window.app?.state.screen).toBe('play');
+    expect(window.app?.state.status).toBe('playing');
   });
 
   it('accumulates score across animation-sized ticks', () => {

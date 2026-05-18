@@ -8,7 +8,16 @@ import type {
   Obstacle,
   WindowAppBridge,
 } from '../types/domain';
-import { loadDifficulty, loadHighScore, saveDifficulty, saveHighScore } from '../utils/storage';
+import {
+  loadBackgroundMusic,
+  loadDifficulty,
+  loadHighScore,
+  loadSoundEffects,
+  saveBackgroundMusic,
+  saveDifficulty,
+  saveHighScore,
+  saveSoundEffects,
+} from '../utils/storage';
 
 const LANES = [0, 1, 2] as const;
 const MAX_DELTA_MS = 80;
@@ -28,7 +37,11 @@ const initialState = (): GameState => ({
   score: 0,
   elapsedMs: 0,
   highScore: loadHighScore(),
-  settings: { difficulty: loadDifficulty() },
+  settings: {
+    difficulty: loadDifficulty(),
+    backgroundMusic: loadBackgroundMusic(),
+    soundEffects: loadSoundEffects(),
+  },
   seed: 7,
   nextObstacleId: 1,
   lastTickAt: null,
@@ -163,7 +176,13 @@ export function useAppState() {
           status: 'ended',
           highScore: updateHighScore(current.score, current.highScore),
         })),
-      openMenu: () => commit((current) => ({ ...current, screen: 'menu', previousScreen: 'menu', status: 'idle' })),
+      openMenu: () =>
+        commit((current) => ({
+          ...current,
+          screen: 'menu',
+          previousScreen: 'menu',
+          status: current.status === 'paused' ? 'paused' : 'idle',
+        })),
       openSettings: () =>
         commit((current) => ({
           ...current,
@@ -178,11 +197,20 @@ export function useAppState() {
           previousScreen: current.screen,
           status: current.status === 'playing' ? 'paused' : current.status,
         })),
-      setDifficulty: (difficulty: Difficulty) =>
-        commit((current) => {
-          saveDifficulty(difficulty);
-          return { ...current, settings: { difficulty } };
-        }),
+      setDifficulty: (difficulty: Difficulty) => {
+        saveDifficulty(difficulty);
+        commit((current) => ({ ...current, settings: { ...current.settings, difficulty } }));
+      },
+      toggleBackgroundMusic: () => {
+        const backgroundMusic = !stateRef.current.settings.backgroundMusic;
+        saveBackgroundMusic(backgroundMusic);
+        commit((current) => ({ ...current, settings: { ...current.settings, backgroundMusic } }));
+      },
+      toggleSoundEffects: () => {
+        const soundEffects = !stateRef.current.settings.soundEffects;
+        saveSoundEffects(soundEffects);
+        commit((current) => ({ ...current, settings: { ...current.settings, soundEffects } }));
+      },
       moveLeft: () => actions.moveToLane(clampLane(stateRef.current.playerLane - 1)),
       moveRight: () => actions.moveToLane(clampLane(stateRef.current.playerLane + 1)),
       moveToLane: (lane: Lane) =>
