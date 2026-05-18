@@ -121,6 +121,26 @@ describe('game loop regressions', () => {
     expect(window.app?.state.score).toBe(helpScore);
   });
 
+  it('resumes a paused run from the main menu resume action', () => {
+    render(createElement(App));
+
+    act(() => {
+      window.app?.actions.startGame();
+      window.app?.actions.pauseGame();
+      window.app?.actions.openMenu();
+    });
+
+    expect(window.app?.state.screen).toBe('menu');
+    expect(window.app?.state.status).toBe('paused');
+
+    act(() => {
+      screen.getByRole('button', { name: /resume/i }).click();
+    });
+
+    expect(window.app?.state.screen).toBe('play');
+    expect(window.app?.state.status).toBe('playing');
+  });
+
   it('accumulates score across animation-sized ticks', () => {
     render(createElement(App));
 
