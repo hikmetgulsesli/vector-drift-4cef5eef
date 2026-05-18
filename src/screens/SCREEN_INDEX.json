@@ -1,0 +1,200 @@
+[
+  {
+    "screenId": "348755d3ff5f405284d569854578a674",
+    "title": "Game Options (settings)",
+    "componentName": "GameOptionsSettings",
+    "file": "src/screens/GameOptionsSettings.tsx",
+    "buttons": 7,
+    "inputs": 0,
+    "links": 0,
+    "actions": [
+      {
+        "id": "button-1-1",
+        "kind": "button",
+        "label": "Button 1",
+        "index": 0
+      },
+      {
+        "id": "button-2-2",
+        "kind": "button",
+        "label": "Button 2",
+        "index": 1
+      },
+      {
+        "id": "button-3-3",
+        "kind": "button",
+        "label": "Button 3",
+        "index": 2
+      },
+      {
+        "id": "easy-4",
+        "kind": "button",
+        "label": "EASY",
+        "index": 3
+      },
+      {
+        "id": "normal-5",
+        "kind": "button",
+        "label": "NORMAL",
+        "index": 4
+      },
+      {
+        "id": "hard-6",
+        "kind": "button",
+        "label": "HARD",
+        "index": 5
+      },
+      {
+        "id": "main-menu-7",
+        "kind": "button",
+        "label": "MAIN MENU",
+        "index": 6
+      }
+    ]
+  },
+  {
+    "screenId": "4112051022644754ae6f7f2240483728",
+    "title": "Game Over (result)",
+    "componentName": "GameOverResult",
+    "file": "src/screens/GameOverResult.tsx",
+    "buttons": 4,
+    "inputs": 0,
+    "links": 0,
+    "actions": [
+      {
+        "id": "play-again-1",
+        "kind": "button",
+        "label": "PLAY AGAIN",
+        "index": 0
+      },
+      {
+        "id": "main-menu-2",
+        "kind": "button",
+        "label": "MAIN MENU",
+        "index": 1
+      },
+      {
+        "id": "button-3-3",
+        "kind": "button",
+        "label": "Button 3",
+        "index": 2
+      },
+      {
+        "id": "button-4-4",
+        "kind": "button",
+        "label": "Button 4",
+        "index": 3
+      }
+    ]
+  },
+  {
+    "screenId": "9ec96503a8814407b76ceeb9c36584dd",
+    "title": "Game Board (play)",
+    "componentName": "GameBoardPlay",
+    "file": "src/screens/GameBoardPlay.tsx",
+    "buttons": 3,
+    "inputs": 0,
+    "links": 0,
+    "actions": [
+      {
+        "id": "button-1-1",
+        "kind": "button",
+        "label": "Button 1",
+        "index": 0
+      },
+      {
+        "id": "button-2-2",
+        "kind": "button",
+        "label": "Button 2",
+        "index": 1
+      },
+      {
+        "id": "button-3-3",
+        "kind": "button",
+        "label": "Button 3",
+        "index": 2
+      }
+    ]
+  },
+  {
+    "screenId": "154b8d9ec82e4f9d878df774df3e6f26",
+    "title": "Controls Help (help)",
+    "componentName": "ControlsHelpHelp",
+    "file": "src/screens/ControlsHelpHelp.tsx",
+    "buttons": 1,
+    "inputs": 0,
+    "links": 0,
+    "actions": [
+      {
+        "id": "main-menu-1",
+        "kind": "button",
+        "label": "MAIN MENU",
+        "index": 0
+      }
+    ]
+  },
+  {
+    "screenId": "f05cd72dfbf542b68a304c61b5889093",
+    "title": "Pause Overlay (overlay)",
+    "componentName": "PauseOverlayOverlay",
+    "file": "src/screens/PauseOverlayOverlay.tsx",
+    "buttons": 3,
+    "inputs": 0,
+    "links": 0,
+    "actions": [
+      {
+        "id": "resume-1",
+        "kind": "button",
+        "label": "RESUME",
+        "index": 0
+      },
+      {
+        "id": "restart-2",
+        "kind": "button",
+        "label": "RESTART",
+        "index": 1
+      },
+      {
+        "id": "main-menu-3",
+        "kind": "button",
+        "label": "MAIN MENU",
+        "index": 2
+      }
+    ]
+  },
+  {
+    "screenId": "25a891b647604f91b794b180f6482da4",
+    "title": "Main Menu (menu)",
+    "componentName": "MainMenuMenu",
+    "file": "src/screens/MainMenuMenu.tsx",
+    "buttons": 4,
+    "inputs": 0,
+    "links": 0,
+    "actions": [
+      {
+        "id": "start-game-1",
+        "kind": "button",
+        "label": "START GAME",
+        "index": 0
+      },
+      {
+        "id": "resume-2",
+        "kind": "button",
+        "label": "RESUME",
+        "index": 1
+      },
+      {
+        "id": "options-3",
+        "kind": "button",
+        "label": "OPTIONS",
+        "index": 2
+      },
+      {
+        "id": "help-4",
+        "kind": "button",
+        "label": "HELP",
+        "index": 3
+      }
+    ]
+  }
+]
