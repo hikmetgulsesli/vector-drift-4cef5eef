@@ -159,7 +159,7 @@ function ScreenBridge() {
       resumeAvailable={state.status === 'paused'}
       actions={{
         'start-game-1': actions.startGame,
-        'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,
+        'resume-2': actions.resumeGame,
         'options-3': actions.openSettings,
         'help-4': actions.openHelp,
       }}

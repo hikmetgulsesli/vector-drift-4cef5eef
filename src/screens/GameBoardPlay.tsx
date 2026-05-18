@@ -38,6 +38,12 @@ const formatTime = (elapsedMs = 0) => {
 
 const laneLeft = (lane: Lane) => `${16.666 + lane * 33.333}%`;
 
+const obstacleVariants = [
+  { height: "2rem", rotation: 12, width: "4rem" },
+  { height: "3rem", rotation: -8, width: "2rem" },
+  { height: "2.5rem", rotation: 45, width: "2.5rem" },
+] as const;
+
 export function GameBoardPlay({
   actions,
   elapsedMs = 0,
@@ -95,19 +101,25 @@ export function GameBoardPlay({
       {/* Playfield Area */}
       <main className="flex-grow relative w-full h-full overflow-hidden border-x border-outline-variant/30">
       {/* Dynamic Obstacles (Simulated) */}
-      {obstacles.map((obstacle) => (
+      {obstacles.map((obstacle) => {
+        const variant = obstacleVariants[obstacle.id % obstacleVariants.length];
+
+        return (
       <div
-        className="absolute top-[20%] left-[30%] w-16 h-8 bg-secondary/20 border border-secondary obstacle transform rotate-12"
+        className="absolute bg-secondary/20 border border-secondary obstacle transform"
         key={obstacle.id}
         style={
           {
+            height: variant.height,
             left: laneLeft(obstacle.lane),
             top: `${Math.min(94, Math.max(0, obstacle.y * 100))}%`,
-            transform: "translateX(-50%) rotate(12deg)",
+            transform: `translateX(-50%) rotate(${variant.rotation}deg)`,
+            width: variant.width,
           } as CSSProperties
         }
       ></div>
-      ))}
+        );
+      })}
       {/* Player Ship */}
       <div
         className="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 player-ship"

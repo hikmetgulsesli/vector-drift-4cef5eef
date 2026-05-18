@@ -17,7 +17,11 @@ export interface MainMenuMenuProps {
   resumeAvailable?: boolean;
 }
 
-const formatScore = (score = 0) => Math.max(0, Math.floor(score)).toLocaleString("en-US");
+const formatScore = (score = 0) =>
+  Math.max(0, Math.floor(score)).toLocaleString("en-US", {
+    minimumIntegerDigits: 6,
+    useGrouping: true,
+  });
 
 export function MainMenuMenu({ actions, highScore = 0, resumeAvailable = false }: MainMenuMenuProps) {
   return (
