@@ -8,7 +8,16 @@ import type {
   Obstacle,
   WindowAppBridge,
 } from '../types/domain';
-import { loadDifficulty, loadHighScore, saveDifficulty, saveHighScore } from '../utils/storage';
+import {
+  loadBackgroundMusic,
+  loadDifficulty,
+  loadHighScore,
+  loadSoundEffects,
+  saveBackgroundMusic,
+  saveDifficulty,
+  saveHighScore,
+  saveSoundEffects,
+} from '../utils/storage';
 
 const LANES = [0, 1, 2] as const;
 const MAX_DELTA_MS = 80;
@@ -28,7 +37,11 @@ const initialState = (): GameState => ({
   score: 0,
   elapsedMs: 0,
   highScore: loadHighScore(),
-  settings: { difficulty: loadDifficulty() },
+  settings: {
+    difficulty: loadDifficulty(),
+    backgroundMusic: loadBackgroundMusic(),
+    soundEffects: loadSoundEffects(),
+  },
   seed: 7,
   nextObstacleId: 1,
   lastTickAt: null,
@@ -181,7 +194,19 @@ export function useAppState() {
       setDifficulty: (difficulty: Difficulty) =>
         commit((current) => {
           saveDifficulty(difficulty);
-          return { ...current, settings: { difficulty } };
+          return { ...current, settings: { ...current.settings, difficulty } };
+        }),
+      toggleBackgroundMusic: () =>
+        commit((current) => {
+          const backgroundMusic = !current.settings.backgroundMusic;
+          saveBackgroundMusic(backgroundMusic);
+          return { ...current, settings: { ...current.settings, backgroundMusic } };
+        }),
+      toggleSoundEffects: () =>
+        commit((current) => {
+          const soundEffects = !current.settings.soundEffects;
+          saveSoundEffects(soundEffects);
+          return { ...current, settings: { ...current.settings, soundEffects } };
         }),
       moveLeft: () => actions.moveToLane(clampLane(stateRef.current.playerLane - 1)),
       moveRight: () => actions.moveToLane(clampLane(stateRef.current.playerLane + 1)),
