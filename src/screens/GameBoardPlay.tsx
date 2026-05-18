@@ -44,6 +44,9 @@ const obstacleVariants = [
   { height: "2.5rem", rotation: 45, width: "2.5rem" },
 ] as const;
 
+const obstacleVariantFor = (obstacleId: number) =>
+  obstacleVariants[Math.abs(Math.trunc(obstacleId)) % obstacleVariants.length];
+
 export function GameBoardPlay({
   actions,
   elapsedMs = 0,
@@ -102,7 +105,7 @@ export function GameBoardPlay({
       <main className="flex-grow relative w-full h-full overflow-hidden border-x border-outline-variant/30">
       {/* Dynamic Obstacles (Simulated) */}
       {obstacles.map((obstacle) => {
-        const variant = obstacleVariants[obstacle.id % obstacleVariants.length];
+        const variant = obstacleVariantFor(obstacle.id);
 
         return (
       <div
