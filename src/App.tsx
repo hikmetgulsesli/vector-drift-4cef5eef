@@ -16,6 +16,7 @@ function formatTime(ms: number) {
 
 function Playfield() {
   const { state, actions } = useAppContext();
+  const controlsDisabled = state.status !== 'playing';
 
   return (
     <section className="vd-playfield" aria-label="Vector Drift playfield">
@@ -24,6 +25,7 @@ function Playfield() {
           <button
             aria-label={`Move to lane ${lane + 1}`}
             className="vd-lane"
+            disabled={controlsDisabled}
             key={lane}
             type="button"
             onClick={() => actions.moveToLane(lane as Lane)}
@@ -44,10 +46,10 @@ function Playfield() {
         />
       </div>
       <div className="vd-touch-controls" aria-label="Touch controls">
-        <button type="button" onClick={actions.moveLeft}>
+        <button type="button" disabled={controlsDisabled} onClick={actions.moveLeft}>
           Left
         </button>
-        <button type="button" onClick={actions.moveRight}>
+        <button type="button" disabled={controlsDisabled} onClick={actions.moveRight}>
           Right
         </button>
       </div>

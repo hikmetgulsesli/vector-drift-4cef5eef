@@ -194,7 +194,8 @@ export function useAppState() {
         }),
       moveLeft: () => actions.moveToLane(clampLane(stateRef.current.playerLane - 1)),
       moveRight: () => actions.moveToLane(clampLane(stateRef.current.playerLane + 1)),
-      moveToLane: (lane: Lane) => commit((current) => ({ ...current, playerLane: clampLane(lane) })),
+      moveToLane: (lane: Lane) =>
+        commit((current) => (current.status === 'playing' ? { ...current, playerLane: clampLane(lane) } : current)),
       tick,
     }),
     [commit, tick, updateHighScore],
