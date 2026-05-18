@@ -97,6 +97,11 @@ function ScreenBridge() {
     return (
       <>
         <GameBoardPlay
+          elapsedMs={state.elapsedMs}
+          highScore={state.highScore}
+          obstacles={state.obstacles}
+          playerLane={state.playerLane}
+          score={state.score}
           actions={{
             'button-1-1': actions.openSettings,
             'button-2-2': actions.openHelp,
@@ -132,6 +137,11 @@ function ScreenBridge() {
     return (
       <>
         <GameBoardPlay
+          elapsedMs={state.elapsedMs}
+          highScore={state.highScore}
+          obstacles={state.obstacles}
+          playerLane={state.playerLane}
+          score={state.score}
           actions={{
             'button-1-1': actions.openSettings,
             'button-2-2': actions.openHelp,
@@ -145,6 +155,8 @@ function ScreenBridge() {
 
   return (
     <MainMenuMenu
+      highScore={state.highScore}
+      resumeAvailable={state.status === 'paused'}
       actions={{
         'start-game-1': actions.startGame,
         'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,

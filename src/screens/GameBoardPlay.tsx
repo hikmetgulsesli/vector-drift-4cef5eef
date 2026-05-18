@@ -7,16 +7,46 @@
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
+import type { CSSProperties } from "react";
 import { Circle, Pause, Settings } from "lucide-react";
+import type { Lane, Obstacle } from "../types/domain";
 
 
 export type GameBoardPlayActionId = "button-1-1" | "button-2-2" | "button-3-3";
 
 export interface GameBoardPlayProps {
   actions?: Partial<Record<GameBoardPlayActionId, () => void>>;
+  elapsedMs?: number;
+  highScore?: number;
+  obstacles?: Obstacle[];
+  playerLane?: Lane;
+  score?: number;
 }
 
-export function GameBoardPlay({ actions }: GameBoardPlayProps) {
+const formatScore = (score = 0) =>
+  Math.max(0, Math.floor(score)).toLocaleString("en-US", {
+    minimumIntegerDigits: 6,
+    useGrouping: true,
+  });
+
+const formatTime = (elapsedMs = 0) => {
+  const totalTenths = Math.max(0, Math.floor(elapsedMs / 100));
+  const minutes = Math.floor(totalTenths / 600);
+  const seconds = Math.floor((totalTenths % 600) / 10);
+  const tenths = totalTenths % 10;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${tenths}`;
+};
+
+const laneLeft = (lane: Lane) => `${16.666 + lane * 33.333}%`;
+
+export function GameBoardPlay({
+  actions,
+  elapsedMs = 0,
+  highScore = 0,
+  obstacles = [],
+  playerLane = 1,
+  score = 0,
+}: GameBoardPlayProps) {
   return (
     <>
       <div className="crt-overlay"></div>
@@ -34,11 +64,11 @@ export function GameBoardPlay({ actions }: GameBoardPlayProps) {
       <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
       <span className="font-label-sm text-label-sm uppercase text-on-surface-variant">Score</span>
-      <span className="font-headline-lg-mobile text-headline-lg-mobile text-primary drop-shadow-[0_0_4px_#4cd7f6]">012,450</span>
+      <span className="font-headline-lg-mobile text-headline-lg-mobile text-primary drop-shadow-[0_0_4px_#4cd7f6]">{formatScore(score)}</span>
       </div>
       <div className="flex items-center gap-2">
       <span className="font-label-sm text-label-sm uppercase text-on-surface-variant">Time</span>
-      <span className="font-body-md text-body-md text-on-background">02:45.3</span>
+      <span className="font-body-md text-body-md text-on-background">{formatTime(elapsedMs)}</span>
       </div>
       </div>
       </div>
@@ -47,7 +77,7 @@ export function GameBoardPlay({ actions }: GameBoardPlayProps) {
       {/* High Score Indicator */}
       <div className="hidden md:flex flex-col items-end gap-1">
       <span className="font-label-sm text-label-sm uppercase text-secondary">High Score</span>
-      <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface drop-shadow-[0_0_2px_#ffb0cd]">999,999</span>
+      <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface drop-shadow-[0_0_2px_#ffb0cd]">{formatScore(highScore)}</span>
       </div>
       {/* Trailing Icon Actions */}
       <div className="flex items-center gap-4">
@@ -66,14 +96,24 @@ export function GameBoardPlay({ actions }: GameBoardPlayProps) {
       {/* Playfield Area */}
       <main className="flex-grow relative w-full h-full overflow-hidden border-x border-outline-variant/30">
       {/* Dynamic Obstacles (Simulated) */}
-      {/* Obstacle 1 */}
-      <div className="absolute top-[20%] left-[30%] w-16 h-8 bg-secondary/20 border border-secondary obstacle transform rotate-12"></div>
-      {/* Obstacle 2 */}
-      <div className="absolute top-[45%] left-[65%] w-24 h-6 bg-secondary/20 border border-secondary obstacle transform -rotate-6"></div>
-      {/* Obstacle 3 */}
-      <div className="absolute top-[70%] left-[15%] w-12 h-12 bg-secondary/20 border border-secondary obstacle transform rotate-45"></div>
+      {obstacles.map((obstacle) => (
+      <div
+        className="absolute top-[20%] left-[30%] w-16 h-8 bg-secondary/20 border border-secondary obstacle transform rotate-12"
+        key={obstacle.id}
+        style={
+          {
+            left: laneLeft(obstacle.lane),
+            top: `${Math.min(94, Math.max(0, obstacle.y * 100))}%`,
+            transform: "translateX(-50%) rotate(12deg)",
+          } as CSSProperties
+        }
+      ></div>
+      ))}
       {/* Player Ship */}
-      <div className="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 player-ship"></div>
+      <div
+        className="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 player-ship"
+        style={{ left: laneLeft(playerLane) } as CSSProperties}
+      ></div>
       {/* Visual Feedback / HUD Elements within playfield */}
       <div className="absolute bottom-margin right-margin flex flex-col gap-2 opacity-50">
       <div className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-widest text-right">Thruster Temp</div>

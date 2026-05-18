@@ -14,9 +14,13 @@ export type MainMenuMenuActionId = "start-game-1" | "resume-2" | "options-3" | "
 
 export interface MainMenuMenuProps {
   actions?: Partial<Record<MainMenuMenuActionId, () => void>>;
+  highScore?: number;
+  resumeAvailable?: boolean;
 }
 
-export function MainMenuMenu({ actions }: MainMenuMenuProps) {
+const formatScore = (score = 0) => Math.max(0, Math.floor(score)).toLocaleString("en-US");
+
+export function MainMenuMenu({ actions, highScore = 0, resumeAvailable = false }: MainMenuMenuProps) {
   return (
     <>
       {/* Background Effects */}
@@ -42,7 +46,7 @@ export function MainMenuMenu({ actions }: MainMenuMenuProps) {
                       START GAME
                   </button>
       {/* RESUME: Outline */}
-      <button className="w-full min-h-touch-target-min flex items-center justify-center bg-transparent text-primary border border-primary font-label-sm text-label-sm uppercase tracking-widest px-6 py-4 hover:drop-shadow-[0_0_10px_#4cd7f6] transition-colors duration-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background" type="button" data-action-id="resume-2" onClick={actions?.["resume-2"]}>
+      <button className="w-full min-h-touch-target-min flex items-center justify-center bg-transparent text-primary border border-primary font-label-sm text-label-sm uppercase tracking-widest px-6 py-4 hover:drop-shadow-[0_0_10px_#4cd7f6] transition-colors duration-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background" type="button" data-action-id="resume-2" onClick={actions?.["resume-2"]} disabled={!resumeAvailable} aria-disabled={!resumeAvailable}>
                       RESUME
                   </button>
       {/* OPTIONS: Outline with Icon */}
@@ -61,7 +65,7 @@ export function MainMenuMenu({ actions }: MainMenuMenuProps) {
       <footer className="w-full flex justify-center pb-margin pt-8 relative z-10">
       <div className="bg-surface-container-highest border border-outline-variant px-4 py-2 flex items-center gap-2 drop-shadow-[0_0_4px_#4cd7f6]">
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} className="text-primary text-sm" aria-hidden={true} focusable="false" />
-      <span className="font-label-xs text-label-xs text-primary uppercase tracking-widest">HIGH SCORE: 5000</span>
+      <span className="font-label-xs text-label-xs text-primary uppercase tracking-widest">HIGH SCORE: {formatScore(highScore)}</span>
       </div>
       </footer>
     </>
