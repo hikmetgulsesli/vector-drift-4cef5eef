@@ -61,7 +61,7 @@
   overflow: hidden;
   pointer-events: auto;
   position: relative;
-  touch-action: manipulation;
+  touch-action: none;
   width: 100%;
 }
 
