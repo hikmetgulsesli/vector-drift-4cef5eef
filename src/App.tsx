@@ -20,7 +20,7 @@ function Playfield() {
 
   return (
     <section className="vd-playfield" aria-label="Vector Drift playfield">
-      <div className="vd-road" onTouchStart={(event) => event.preventDefault()}>
+      <div className="vd-road">
         {[0, 1, 2].map((lane) => (
           <button
             aria-label={`Move to lane ${lane + 1}`}

@@ -38,6 +38,8 @@ const laneFromSeed = (seed: number): Lane => LANES[Math.abs(seed) % LANES.length
 
 const nextSeed = (seed: number) => (seed * 48271) % 0x7fffffff;
 
+const scoreRateFor = (difficulty: Difficulty) => (difficulty === 'hard' ? 0.024 : 0.018);
+
 const toSnapshot = (state: GameState): AppSnapshot => ({
   ...state,
   lanes: LANES,
@@ -89,7 +91,9 @@ export function useAppState() {
         const obstacles = [...current.obstacles, ...spawned]
           .map((obstacle) => ({ ...obstacle, y: obstacle.y + config.speed * delta }))
           .filter((obstacle) => obstacle.y < 1.15);
-        const score = current.score + Math.floor(delta * (current.settings.difficulty === 'hard' ? 0.024 : 0.018));
+        const scoreRate = scoreRateFor(current.settings.difficulty);
+        const score =
+          current.score + Math.floor(elapsedMs * scoreRate) - Math.floor(current.elapsedMs * scoreRate);
         const crashed = obstacles.some(
           (obstacle) => obstacle.lane === current.playerLane && obstacle.y >= 0.78 && obstacle.y <= 0.98,
         );
@@ -125,28 +129,6 @@ export function useAppState() {
     frame = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(frame);
   }, [state.status, tick]);
-
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') {
-        event.preventDefault();
-        actions.moveLeft();
-      }
-      if (event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') {
-        event.preventDefault();
-        actions.moveRight();
-      }
-      if (event.key === ' ' || event.key === 'Escape') {
-        event.preventDefault();
-        const current = stateRef.current;
-        if (current.status === 'playing') actions.pauseGame();
-        else if (current.status === 'paused') actions.resumeGame();
-      }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  });
 
   const actions = useMemo<AppActions>(
     () => ({
@@ -200,6 +182,28 @@ export function useAppState() {
     }),
     [commit, tick, updateHighScore],
   );
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft' || event.key.toLowerCase() === 'a') {
+        event.preventDefault();
+        actions.moveLeft();
+      }
+      if (event.key === 'ArrowRight' || event.key.toLowerCase() === 'd') {
+        event.preventDefault();
+        actions.moveRight();
+      }
+      if (event.key === ' ' || event.key === 'Escape') {
+        event.preventDefault();
+        const current = stateRef.current;
+        if (current.status === 'playing') actions.pauseGame();
+        else if (current.status === 'paused') actions.resumeGame();
+      }
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [actions]);
 
   useEffect(() => {
     const bridge: WindowAppBridge = {

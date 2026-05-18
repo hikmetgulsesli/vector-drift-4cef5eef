@@ -31,3 +31,34 @@ describe('paused movement guard', () => {
     expect(window.app?.state.playerLane).toBe(pausedLane);
   });
 });
+
+describe('game loop regressions', () => {
+  it('accumulates score across animation-sized ticks', () => {
+    render(createElement(App));
+
+    act(() => {
+      window.app?.actions.startGame();
+      for (let frame = 0; frame < 60; frame += 1) {
+        window.app?.actions.tick(16);
+      }
+    });
+
+    expect(window.app?.state.score).toBeGreaterThan(0);
+  });
+
+  it('does not prevent default touch behavior on the lane controls', () => {
+    render(createElement(App));
+
+    act(() => {
+      window.app?.actions.startGame();
+    });
+
+    const road = document.querySelector('.vd-road');
+    expect(road).toBeInstanceOf(HTMLElement);
+
+    const touchStart = new Event('touchstart', { bubbles: true, cancelable: true });
+    road?.dispatchEvent(touchStart);
+
+    expect(touchStart.defaultPrevented).toBe(false);
+  });
+});
