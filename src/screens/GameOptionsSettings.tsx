@@ -8,36 +8,15 @@
 // 4. Replace placeholder data with props/state
 
 import { ArrowLeft, ChevronLeft, ChevronRight, Circle } from "lucide-react";
-import type { Difficulty, GameSettings } from "../types/domain";
 
 
 export type GameOptionsSettingsActionId = "button-1-1" | "button-2-2" | "button-3-3" | "easy-4" | "normal-5" | "hard-6" | "main-menu-7";
 
 export interface GameOptionsSettingsProps {
   actions?: Partial<Record<GameOptionsSettingsActionId, () => void>>;
-  settings?: GameSettings;
 }
 
-const difficultyButtonClass = (difficulty: Difficulty, selectedDifficulty: Difficulty) =>
-  difficulty === selectedDifficulty
-    ? "bg-primary/20 py-2 font-label-sm text-label-sm text-primary border border-primary neon-glow-primary shadow-[0_0_8px_rgba(76,215,246,0.3)]"
-    : "bg-surface-container-high py-2 font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors";
-
-const toggleTrackClass = (enabled: boolean) =>
-  enabled
-    ? "w-12 h-6 border border-primary bg-primary/20 relative flex items-center p-[2px]"
-    : "w-12 h-6 border border-outline-variant bg-surface-container relative flex items-center p-[2px]";
-
-const toggleThumbClass = (enabled: boolean) =>
-  enabled
-    ? "w-5 h-full bg-primary neon-glow-primary ml-auto shadow-[0_0_4px_#4cd7f6]"
-    : "w-5 h-full bg-outline-variant shadow-[0_0_4px_rgba(148,163,184,0.25)]";
-
-export function GameOptionsSettings({ actions, settings }: GameOptionsSettingsProps) {
-  const currentDifficulty = settings?.difficulty ?? "normal";
-  const backgroundMusic = settings?.backgroundMusic ?? true;
-  const soundEffects = settings?.soundEffects ?? true;
-
+export function GameOptionsSettings({ actions }: GameOptionsSettingsProps) {
   return (
     <>
       {/* Scanline Overlay */}
@@ -65,15 +44,15 @@ export function GameOptionsSettings({ actions, settings }: GameOptionsSettingsPr
       {/* Background Music Toggle */}
       <div className="flex items-center justify-between p-unit bg-surface-container-high border border-outline-variant hover:border-primary/50 transition-colors">
       <span className="font-body-md text-body-md text-on-surface ml-2">Background Music</span>
-      <button aria-label="Toggle background music" aria-pressed={backgroundMusic} className={toggleTrackClass(backgroundMusic)} type="button" data-action-id="button-2-2" onClick={actions?.["button-2-2"]}>
-      <div className={toggleThumbClass(backgroundMusic)}></div>
+      <button className="w-12 h-6 border border-primary bg-primary/20 relative flex items-center p-[2px]" type="button" data-action-id="button-2-2" onClick={actions?.["button-2-2"]}>
+      <div className="w-5 h-full bg-primary neon-glow-primary ml-auto shadow-[0_0_4px_#4cd7f6]"></div>
       </button>
       </div>
       {/* Sound Effects Toggle */}
       <div className="flex items-center justify-between p-unit bg-surface-container-high border border-outline-variant hover:border-primary/50 transition-colors">
       <span className="font-body-md text-body-md text-on-surface ml-2">Sound Effects</span>
-      <button aria-label="Toggle sound effects" aria-pressed={soundEffects} className={toggleTrackClass(soundEffects)} type="button" data-action-id="button-3-3" onClick={actions?.["button-3-3"]}>
-      <div className={toggleThumbClass(soundEffects)}></div>
+      <button className="w-12 h-6 border border-primary bg-primary/20 relative flex items-center p-[2px]" type="button" data-action-id="button-3-3" onClick={actions?.["button-3-3"]}>
+      <div className="w-5 h-full bg-primary neon-glow-primary ml-auto shadow-[0_0_4px_#4cd7f6]"></div>
       </button>
       </div>
       </div>
@@ -90,9 +69,9 @@ export function GameOptionsSettings({ actions, settings }: GameOptionsSettingsPr
       <div className="flex flex-col gap-3">
       <label className="font-label-sm text-label-sm text-on-surface-variant uppercase">AI Difficulty</label>
       <div className="grid grid-cols-3 gap-[1px] bg-outline-variant border border-outline-variant">
-      <button aria-pressed={currentDifficulty === "easy"} className={difficultyButtonClass("easy", currentDifficulty)} type="button" data-action-id="easy-4" onClick={actions?.["easy-4"]}>EASY</button>
-      <button aria-pressed={currentDifficulty === "normal"} className={difficultyButtonClass("normal", currentDifficulty)} type="button" data-action-id="normal-5" onClick={actions?.["normal-5"]}>NORMAL</button>
-      <button aria-pressed={currentDifficulty === "hard"} className={difficultyButtonClass("hard", currentDifficulty)} type="button" data-action-id="hard-6" onClick={actions?.["hard-6"]}>HARD</button>
+      <button className="bg-surface-container-high py-2 font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors" type="button" data-action-id="easy-4" onClick={actions?.["easy-4"]}>EASY</button>
+      <button className="bg-primary/20 py-2 font-label-sm text-label-sm text-primary border border-primary neon-glow-primary shadow-[0_0_8px_rgba(76,215,246,0.3)]" type="button" data-action-id="normal-5" onClick={actions?.["normal-5"]}>NORMAL</button>
+      <button className="bg-surface-container-high py-2 font-label-sm text-label-sm text-on-surface-variant hover:bg-surface-container-highest transition-colors" type="button" data-action-id="hard-6" onClick={actions?.["hard-6"]}>HARD</button>
       </div>
       </div>
       {/* Simulation Speed */}
