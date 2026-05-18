@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vector Drift - Paused</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#ffb0cd",
+                    "primary": "#4cd7f6",
+                    "surface-variant": "#303638",
+                    "primary-fixed": "#acedff",
+                    "primary-fixed-dim": "#4cd7f6",
+                    "surface-container-lowest": "#090f11",
+                    "secondary-fixed": "#ffd9e4",
+                    "surface-container-low": "#171d1e",
+                    "on-secondary-container": "#ffbad3",
+                    "on-primary": "#003640",
+                    "outline-variant": "#3d494c",
+                    "surface-container-highest": "#303638",
+                    "surface-container-high": "#252b2d",
+                    "on-surface-variant": "#bcc9cd",
+                    "on-surface": "#dee3e6",
+                    "inverse-primary": "#00687a",
+                    "tertiary-fixed": "#ffdcbf",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#ffb873",
+                    "tertiary-container": "#e89337",
+                    "outline": "#869397",
+                    "on-secondary-fixed": "#3e0022",
+                    "surface-container": "#1b2122",
+                    "background": "#0e1416",
+                    "surface": "#0e1416",
+                    "surface-dim": "#0e1416",
+                    "tertiary": "#ffb873",
+                    "surface-bright": "#343a3c",
+                    "on-secondary-fixed-variant": "#8c0053",
+                    "on-background": "#dee3e6",
+                    "surface-tint": "#4cd7f6",
+                    "on-tertiary-fixed-variant": "#6a3b00",
+                    "inverse-on-surface": "#2b3133",
+                    "on-secondary": "#640039",
+                    "secondary-fixed-dim": "#ffb0cd",
+                    "on-tertiary-container": "#5b3200",
+                    "on-error": "#690005",
+                    "on-tertiary": "#4b2800",
+                    "primary-container": "#06b6d4",
+                    "secondary-container": "#aa0266",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#2d1600",
+                    "on-primary-fixed": "#001f26",
+                    "inverse-surface": "#dee3e6",
+                    "on-primary-container": "#00424f",
+                    "on-primary-fixed-variant": "#004e5c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "grid-size": "8px",
+                    "touch-target-min": "44px",
+                    "margin": "24px",
+                    "unit": "4px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": [
+                            "Space Grotesk"
+                    ],
+                    "label-sm": [
+                            "Geist"
+                    ],
+                    "body-md": [
+                            "Geist"
+                    ],
+                    "label-xs": [
+                            "Geist"
+                    ],
+                    "headline-lg": [
+                            "Space Grotesk"
+                    ],
+                    "display-lg": [
+                            "Space Grotesk"
+                    ]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-xs": [
+                            "10px",
+                            {
+                                    "lineHeight": "12px",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "0.02em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "52px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined { font-family: 'Material Symbols Outlined'; }
+        
+        /* Scanline overlay for retro feel */
+        .scanlines {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.1) 50%,
+                rgba(0,0,0,0.1)
+            );
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen w-screen overflow-hidden relative font-body-md text-body-md select-none">
+<!-- Simulated Gameplay Background -->
+<div class="absolute inset-0 bg-cover bg-center z-0" data-alt="A high-speed, neon-drenched cyber-grid race track viewed from a cockpit perspective. The scene features glowing cyan grid lines stretching into the distance against a pitch-black background. Sharp, angular geometric structures line the track, emitting intense pink and blue neon light. The overall aesthetic is a cold, digital, retro-arcade racing environment with high contrast and stark digital lines." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAmkPUZkhImn8InMD80cnoaJU1hxD1F0dsVJfZoZ4YG-kcXk7a67AWq8fqX1UK6Qcua_mDQ7Cd2SI7crLaF2hXJ2gg-aTsDRu4thbn4AHes9hZBnxEYZ5bzpZ-QlElbOfGVIxG6XK34VPdPOv9K7QdFirNQ5sXEODuuNPuauImquEXDELBh7KKN9FeEOvbj14raiFI8RLiHMM0UYuuzb8IGCw5oyTEKTsUFNDvC_vZ_OrWuoWxe2afyqel38THVM1HKsIic6BssQi4');">
+<div class="absolute inset-0 scanlines z-10 pointer-events-none"></div>
+</div>
+<!-- Pause Overlay Canvas -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-background/85 backdrop-blur-md">
+<!-- Central Pause Modal -->
+<div class="bg-surface-container border border-primary p-margin flex flex-col drop-shadow-[0_0_12px_rgba(76,215,246,0.5)] w-full max-w-sm mx-margin relative">
+<!-- Corner Accents (Decals) -->
+<div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary -translate-x-[1px] -translate-y-[1px]"></div>
+<div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-primary translate-x-[1px] -translate-y-[1px]"></div>
+<div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-primary -translate-x-[1px] translate-y-[1px]"></div>
+<div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary translate-x-[1px] translate-y-[1px]"></div>
+<!-- Header section -->
+<div class="text-center border-b border-primary/30 pb-gutter mb-margin">
+<h1 class="font-display-lg text-display-lg font-bold italic text-primary drop-shadow-[0_0_8px_#4cd7f6] tracking-tighter">PAUSED</h1>
+<p class="font-label-xs text-label-xs text-on-surface-variant uppercase mt-unit">Simulation Interrupted</p>
+</div>
+<!-- Action Buttons Grid -->
+<div class="flex flex-col gap-gutter">
+<!-- Primary Action: RESUME -->
+<button class="group relative w-full bg-primary text-on-primary py-3 px-4 flex items-center justify-center gap-3 border border-primary hover:drop-shadow-[0_0_8px_#4cd7f6] active:scale-[0.98] transition-all min-h-[touch-target-min]">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest font-bold">RESUME</span>
+</button>
+<!-- Secondary Action: RESTART -->
+<button class="group w-full bg-transparent text-primary py-3 px-4 flex items-center justify-center gap-3 border border-primary hover:bg-primary/10 hover:drop-shadow-[0_0_4px_#4cd7f6] active:scale-[0.98] transition-all min-h-[touch-target-min]">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">RESTART</span>
+</button>
+<!-- Secondary Action: MAIN MENU -->
+<button class="group w-full bg-transparent text-primary py-3 px-4 flex items-center justify-center gap-3 border border-primary hover:bg-primary/10 hover:drop-shadow-[0_0_4px_#4cd7f6] active:scale-[0.98] transition-all min-h-[touch-target-min]">
+<span class="material-symbols-outlined text-[20px]">menu</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">MAIN MENU</span>
+</button>
+</div>
+<!-- Status Line Footer -->
+<div class="mt-margin pt-gutter border-t border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary drop-shadow-[0_0_4px_#4cd7f6]"></div>
+<span class="font-label-xs text-label-xs text-primary uppercase">CONNECTION STABLE</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
+</div>
+</div>
+</div>
+</div>
+</body></html>
