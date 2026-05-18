@@ -33,6 +33,49 @@ describe('paused movement guard', () => {
 });
 
 describe('game loop regressions', () => {
+  it('pauses active gameplay before opening settings or help from play', () => {
+    render(createElement(App));
+
+    act(() => {
+      window.app?.actions.startGame();
+      window.app?.actions.tick(16);
+      window.app?.actions.openSettings();
+    });
+
+    const settingsScore = window.app?.state.score ?? 0;
+    const settingsLane = window.app?.state.playerLane;
+
+    expect(window.app?.state.screen).toBe('settings');
+    expect(window.app?.state.status).toBe('paused');
+    expect(window.app?.state.previousScreen).toBe('play');
+
+    act(() => {
+      window.app?.actions.tick(1000);
+      window.app?.actions.moveToLane(2);
+    });
+
+    expect(window.app?.state.score).toBe(settingsScore);
+    expect(window.app?.state.playerLane).toBe(settingsLane);
+
+    act(() => {
+      window.app?.actions.startGame();
+      window.app?.actions.tick(16);
+      window.app?.actions.openHelp();
+    });
+
+    const helpScore = window.app?.state.score ?? 0;
+
+    expect(window.app?.state.screen).toBe('help');
+    expect(window.app?.state.status).toBe('paused');
+    expect(window.app?.state.previousScreen).toBe('play');
+
+    act(() => {
+      window.app?.actions.tick(1000);
+    });
+
+    expect(window.app?.state.score).toBe(helpScore);
+  });
+
   it('accumulates score across animation-sized ticks', () => {
     render(createElement(App));
 

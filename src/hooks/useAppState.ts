@@ -165,8 +165,19 @@ export function useAppState() {
         })),
       openMenu: () => commit((current) => ({ ...current, screen: 'menu', previousScreen: 'menu', status: 'idle' })),
       openSettings: () =>
-        commit((current) => ({ ...current, screen: 'settings', previousScreen: current.screen })),
-      openHelp: () => commit((current) => ({ ...current, screen: 'help', previousScreen: current.screen })),
+        commit((current) => ({
+          ...current,
+          screen: 'settings',
+          previousScreen: current.screen,
+          status: current.status === 'playing' ? 'paused' : current.status,
+        })),
+      openHelp: () =>
+        commit((current) => ({
+          ...current,
+          screen: 'help',
+          previousScreen: current.screen,
+          status: current.status === 'playing' ? 'paused' : current.status,
+        })),
       setDifficulty: (difficulty: Difficulty) =>
         commit((current) => {
           saveDifficulty(difficulty);
