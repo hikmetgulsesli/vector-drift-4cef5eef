@@ -72,6 +72,16 @@ function GameHud() {
 
 function ScreenBridge() {
   const { state, actions } = useAppContext();
+  const handleMenuClickCapture = (event: React.MouseEvent<HTMLElement>) => {
+    const target = event.target;
+    if (
+      state.status === 'paused' &&
+      target instanceof HTMLButtonElement &&
+      target.textContent?.trim().toLowerCase() === 'resume'
+    ) {
+      actions.resumeGame();
+    }
+  };
 
   if (state.screen === 'settings') {
     return (
@@ -145,14 +155,16 @@ function ScreenBridge() {
   }
 
   return (
-    <MainMenuMenu
-      actions={{
-        'start-game-1': actions.startGame,
-        'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,
-        'options-3': actions.openSettings,
-        'help-4': actions.openHelp,
-      }}
-    />
+    <div onClickCapture={handleMenuClickCapture}>
+      <MainMenuMenu
+        actions={{
+          'start-game-1': actions.startGame,
+          'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,
+          'options-3': actions.openSettings,
+          'help-4': actions.openHelp,
+        }}
+      />
+    </div>
   );
 }
 
