@@ -36,14 +36,20 @@ describe('game loop regressions', () => {
   it('accumulates score across animation-sized ticks', () => {
     render(createElement(App));
 
+    let firstFrameScore = 0;
+
     act(() => {
       window.app?.actions.startGame();
+      window.app?.actions.tick(16);
+      firstFrameScore = window.app?.state.score ?? 0;
       for (let frame = 0; frame < 60; frame += 1) {
         window.app?.actions.tick(16);
       }
     });
 
+    expect(firstFrameScore).toBeGreaterThan(0);
     expect(window.app?.state.score).toBeGreaterThan(0);
+    expect(window.app?.state.score).toBeGreaterThan(firstFrameScore);
   });
 
   it('does not prevent default touch behavior on the lane controls', () => {

@@ -91,9 +91,7 @@ export function useAppState() {
         const obstacles = [...current.obstacles, ...spawned]
           .map((obstacle) => ({ ...obstacle, y: obstacle.y + config.speed * delta }))
           .filter((obstacle) => obstacle.y < 1.15);
-        const scoreRate = scoreRateFor(current.settings.difficulty);
-        const score =
-          current.score + Math.floor(elapsedMs * scoreRate) - Math.floor(current.elapsedMs * scoreRate);
+        const score = current.score + delta * scoreRateFor(current.settings.difficulty);
         const crashed = obstacles.some(
           (obstacle) => obstacle.lane === current.playerLane && obstacle.y >= 0.78 && obstacle.y <= 0.98,
         );

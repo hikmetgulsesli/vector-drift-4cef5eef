@@ -64,7 +64,7 @@ function GameHud() {
     <aside className="vd-hud" aria-label="Game status">
       <span>Score {Math.floor(state.score)}</span>
       <span>Time {formatTime(state.elapsedMs)}</span>
-      <span>Best {state.highScore}</span>
+      <span>Best {Math.floor(state.highScore)}</span>
       <span>{state.settings.difficulty.toUpperCase()}</span>
     </aside>
   );
