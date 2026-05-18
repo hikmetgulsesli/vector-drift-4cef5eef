@@ -8,15 +8,24 @@
 // 4. Replace placeholder data with props/state
 
 import { Circle, Menu, Play, RefreshCw } from "lucide-react";
+import { formatResultElapsed, formatResultScore } from "./GameOverResult";
 
 
 export type PauseOverlayOverlayActionId = "resume-1" | "restart-2" | "main-menu-3";
 
 export interface PauseOverlayOverlayProps {
   actions?: Partial<Record<PauseOverlayOverlayActionId, () => void>>;
+  score?: number;
+  elapsedMs?: number;
+  difficulty?: string;
 }
 
-export function PauseOverlayOverlay({ actions }: PauseOverlayOverlayProps) {
+export function PauseOverlayOverlay({
+  actions,
+  score = 0,
+  elapsedMs = 0,
+  difficulty = "normal",
+}: PauseOverlayOverlayProps) {
   return (
     <>
       {/* Simulated Gameplay Background */}
@@ -35,7 +44,7 @@ export function PauseOverlayOverlay({ actions }: PauseOverlayOverlayProps) {
       {/* Header section */}
       <div className="text-center border-b border-primary/30 pb-gutter mb-margin">
       <h1 className="font-display-lg text-display-lg font-bold italic text-primary drop-shadow-[0_0_8px_#4cd7f6] tracking-tighter">PAUSED</h1>
-      <p className="font-label-xs text-label-xs text-on-surface-variant uppercase mt-unit">Simulation Interrupted</p>
+      <p className="font-label-xs text-label-xs text-on-surface-variant uppercase mt-unit">Score {formatResultScore(score)} / Time {formatResultElapsed(elapsedMs)}</p>
       </div>
       {/* Action Buttons Grid */}
       <div className="flex flex-col gap-gutter">
@@ -59,7 +68,7 @@ export function PauseOverlayOverlay({ actions }: PauseOverlayOverlayProps) {
       <div className="mt-margin pt-gutter border-t border-outline-variant flex items-center justify-between">
       <div className="flex items-center gap-2">
       <div className="w-2 h-2 bg-primary drop-shadow-[0_0_4px_#4cd7f6]"></div>
-      <span className="font-label-xs text-label-xs text-primary uppercase">CONNECTION STABLE</span>
+      <span className="font-label-xs text-label-xs text-primary uppercase">{difficulty} MODE</span>
       </div>
       <div className="flex items-center gap-2 text-on-surface-variant">
       <Circle className="text-[14px]" aria-hidden={true} focusable="false" />

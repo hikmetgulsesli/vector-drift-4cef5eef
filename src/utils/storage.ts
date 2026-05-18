@@ -45,7 +45,7 @@ export function saveDifficulty(difficulty: Difficulty): void {
   storage.setItem(DIFFICULTY_KEY, difficulty);
 }
 
-function loadBooleanPreference(key: string, fallback: boolean): boolean {
+export function loadBooleanSetting(key: string, fallback: boolean): boolean {
   const storage = getStorage();
   const value = storage?.getItem(key);
   if (value === 'true') return true;
@@ -53,24 +53,24 @@ function loadBooleanPreference(key: string, fallback: boolean): boolean {
   return fallback;
 }
 
-function saveBooleanPreference(key: string, value: boolean): void {
+export function saveBooleanSetting(key: string, value: boolean): void {
   const storage = getStorage();
   if (!storage) return;
   storage.setItem(key, String(value));
 }
 
 export function loadBackgroundMusic(): boolean {
-  return loadBooleanPreference(BACKGROUND_MUSIC_KEY, true);
+  return loadBooleanSetting(BACKGROUND_MUSIC_KEY, true);
 }
 
-export function saveBackgroundMusic(enabled: boolean): void {
-  saveBooleanPreference(BACKGROUND_MUSIC_KEY, enabled);
+export function saveBackgroundMusic(value: boolean): void {
+  saveBooleanSetting(BACKGROUND_MUSIC_KEY, value);
 }
 
 export function loadSoundEffects(): boolean {
-  return loadBooleanPreference(SOUND_EFFECTS_KEY, true);
+  return loadBooleanSetting(SOUND_EFFECTS_KEY, true);
 }
 
-export function saveSoundEffects(enabled: boolean): void {
-  saveBooleanPreference(SOUND_EFFECTS_KEY, enabled);
+export function saveSoundEffects(value: boolean): void {
+  saveBooleanSetting(SOUND_EFFECTS_KEY, value);
 }
