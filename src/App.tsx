@@ -14,16 +14,6 @@ function formatTime(ms: number) {
   return `${Math.floor(ms / 1000)}s`;
 }
 
-function multiplierFor(difficulty: string) {
-  if (difficulty === 'hard') return 'x2.0';
-  if (difficulty === 'easy') return 'x1.0';
-  return 'x1.5';
-}
-
-function resultText(score: number, elapsedMs: number, highScore: number) {
-  return `Vector Drift result: score ${Math.floor(score)}, time ${formatTime(elapsedMs)}, best ${Math.floor(highScore)}`;
-}
-
 function Playfield() {
   const { state, actions } = useAppContext();
   const controlsDisabled = state.status !== 'playing';
@@ -87,8 +77,8 @@ function ScreenBridge() {
     return (
       <GameOptionsSettings
         actions={{
-          'button-1-1': actions.openMenu,
-          'button-2-2': actions.openHelp,
+          'button-1-1': actions.toggleBackgroundMusic,
+          'button-2-2': actions.toggleSoundEffects,
           'button-3-3': actions.startGame,
           'easy-4': () => actions.setDifficulty('easy'),
           'normal-5': () => actions.setDifficulty('normal'),
@@ -115,41 +105,32 @@ function ScreenBridge() {
         />
         <Playfield />
         <PauseOverlayOverlay
-          score={state.score}
-          elapsedMs={state.elapsedMs}
-          difficulty={state.settings.difficulty}
           actions={{
             'resume-1': actions.resumeGame,
             'restart-2': actions.restartGame,
             'main-menu-3': actions.openMenu,
           }}
+          score={state.score}
+          elapsedMs={state.elapsedMs}
+          difficulty={state.settings.difficulty}
         />
       </>
     );
   }
 
   if (state.screen === 'gameOver') {
-    const result = resultText(state.score, state.elapsedMs, state.highScore);
     return (
       <GameOverResult
-        finalScore={state.score}
-        timeSurvivedMs={state.elapsedMs}
-        multiplier={multiplierFor(state.settings.difficulty)}
-        isNewHighScore={Math.floor(state.score) >= Math.floor(state.highScore) && state.score > 0}
         actions={{
           'play-again-1': actions.restartGame,
           'main-menu-2': actions.openMenu,
-          'button-3-3': () => void navigator.clipboard?.writeText(result),
-          'button-4-4': () => {
-            const blob = new Blob([result], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'vector-drift-result.txt';
-            link.click();
-            URL.revokeObjectURL(url);
-          },
+          'button-3-3': actions.openHelp,
+          'button-4-4': () => undefined,
         }}
+        finalScore={state.score}
+        timeSurvivedMs={state.elapsedMs}
+        multiplier={`x${state.settings.difficulty === 'hard' ? '1.5' : state.settings.difficulty === 'easy' ? '0.8' : '1.0'}`}
+        isNewHighScore={state.score > 0 && Math.floor(state.score) >= Math.floor(state.highScore)}
       />
     );
   }
