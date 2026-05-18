@@ -5,10 +5,9 @@
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
 // 3. Wire interactive controls through the typed actions prop
-// 4. Replace placeholder data with props/state
 
 import type { CSSProperties } from "react";
-import { Circle, Pause, Settings } from "lucide-react";
+import { HelpCircle, Pause, Settings } from "lucide-react";
 import type { Lane, Obstacle } from "../types/domain";
 
 
@@ -85,7 +84,7 @@ export function GameBoardPlay({
       <Settings className="text-[24px]" aria-hidden={true} focusable="false" />
       </button>
       <button aria-label="Help" className="text-on-surface-variant hover:text-secondary hover:drop-shadow-[0_0_10px_#ffb0cd] transition-colors active:scale-95 duration-100 flex items-center justify-center w-touch-target-min h-touch-target-min" type="button" data-action-id="button-2-2" onClick={actions?.["button-2-2"]}>
-      <Circle className="text-[24px]" aria-hidden={true} focusable="false" />
+      <HelpCircle className="text-[24px]" aria-hidden={true} focusable="false" />
       </button>
       <button aria-label="Pause" className="text-on-surface-variant hover:text-secondary hover:drop-shadow-[0_0_10px_#ffb0cd] transition-colors active:scale-95 duration-100 flex items-center justify-center w-touch-target-min h-touch-target-min" type="button" data-action-id="button-3-3" onClick={actions?.["button-3-3"]}>
       <Pause className="text-[24px]" aria-hidden={true} focusable="false" />

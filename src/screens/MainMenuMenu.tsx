@@ -5,9 +5,8 @@
 // 1. DO NOT change className values or layout structure
 // 2. Add useState for dynamic values (replace hardcoded text)
 // 3. Wire interactive controls through the typed actions prop
-// 4. Replace placeholder data with props/state
 
-import { Circle, Settings } from "lucide-react";
+import { Circle, HelpCircle, Settings } from "lucide-react";
 
 
 export type MainMenuMenuActionId = "start-game-1" | "resume-2" | "options-3" | "help-4";
@@ -56,7 +55,7 @@ export function MainMenuMenu({ actions, highScore = 0, resumeAvailable = false }
                   </button>
       {/* HELP: Outline with Icon */}
       <button className="w-full min-h-touch-target-min flex items-center justify-center gap-3 bg-transparent text-primary border border-primary font-label-sm text-label-sm uppercase tracking-widest px-6 py-4 hover:drop-shadow-[0_0_10px_#4cd7f6] transition-colors duration-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background" type="button" data-action-id="help-4" onClick={actions?.["help-4"]}>
-      <Circle  style={{fontVariationSettings: "'FILL' 0"}} aria-hidden={true} focusable="false" />
+      <HelpCircle  style={{fontVariationSettings: "'FILL' 0"}} aria-hidden={true} focusable="false" />
                       HELP
                   </button>
       </div>
