@@ -12,8 +12,6 @@ export interface Obstacle {
 
 export interface GameSettings {
   difficulty: Difficulty;
-  backgroundMusic: boolean;
-  soundEffects: boolean;
 }
 
 export interface GameState {
@@ -47,8 +45,6 @@ export interface AppActions {
   openSettings: () => void;
   openHelp: () => void;
   setDifficulty: (difficulty: Difficulty) => void;
-  toggleBackgroundMusic: () => void;
-  toggleSoundEffects: () => void;
   moveLeft: () => void;
   moveRight: () => void;
   moveToLane: (lane: Lane) => void;

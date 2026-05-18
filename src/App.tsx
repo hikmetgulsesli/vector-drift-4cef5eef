@@ -14,6 +14,16 @@ function formatTime(ms: number) {
   return `${Math.floor(ms / 1000)}s`;
 }
 
+function multiplierFor(difficulty: string) {
+  if (difficulty === 'hard') return 'x2.0';
+  if (difficulty === 'easy') return 'x1.0';
+  return 'x1.5';
+}
+
+function resultText(score: number, elapsedMs: number, highScore: number) {
+  return `Vector Drift result: score ${Math.floor(score)}, time ${formatTime(elapsedMs)}, best ${Math.floor(highScore)}`;
+}
+
 function Playfield() {
   const { state, actions } = useAppContext();
   const controlsDisabled = state.status !== 'playing';
@@ -72,24 +82,14 @@ function GameHud() {
 
 function ScreenBridge() {
   const { state, actions } = useAppContext();
-  const handleMenuClickCapture = (event: React.MouseEvent<HTMLElement>) => {
-    if (state.status !== 'paused') return;
-
-    const target = event.target instanceof HTMLElement ? event.target : null;
-    const button = target?.closest('button');
-    if (button?.textContent?.trim().toLowerCase() === 'resume') {
-      actions.resumeGame();
-    }
-  };
 
   if (state.screen === 'settings') {
     return (
       <GameOptionsSettings
-        settings={state.settings}
         actions={{
           'button-1-1': actions.openMenu,
-          'button-2-2': actions.toggleBackgroundMusic,
-          'button-3-3': actions.toggleSoundEffects,
+          'button-2-2': actions.openHelp,
+          'button-3-3': actions.startGame,
           'easy-4': () => actions.setDifficulty('easy'),
           'normal-5': () => actions.setDifficulty('normal'),
           'hard-6': () => actions.setDifficulty('hard'),
@@ -115,6 +115,9 @@ function ScreenBridge() {
         />
         <Playfield />
         <PauseOverlayOverlay
+          score={state.score}
+          elapsedMs={state.elapsedMs}
+          difficulty={state.settings.difficulty}
           actions={{
             'resume-1': actions.resumeGame,
             'restart-2': actions.restartGame,
@@ -126,13 +129,26 @@ function ScreenBridge() {
   }
 
   if (state.screen === 'gameOver') {
+    const result = resultText(state.score, state.elapsedMs, state.highScore);
     return (
       <GameOverResult
+        finalScore={state.score}
+        timeSurvivedMs={state.elapsedMs}
+        multiplier={multiplierFor(state.settings.difficulty)}
+        isNewHighScore={Math.floor(state.score) >= Math.floor(state.highScore) && state.score > 0}
         actions={{
           'play-again-1': actions.restartGame,
           'main-menu-2': actions.openMenu,
-          'button-3-3': actions.openHelp,
-          'button-4-4': () => undefined,
+          'button-3-3': () => void navigator.clipboard?.writeText(result),
+          'button-4-4': () => {
+            const blob = new Blob([result], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'vector-drift-result.txt';
+            link.click();
+            URL.revokeObjectURL(url);
+          },
         }}
       />
     );
@@ -154,16 +170,14 @@ function ScreenBridge() {
   }
 
   return (
-    <section onClickCapture={handleMenuClickCapture}>
-      <MainMenuMenu
-        actions={{
-          'start-game-1': actions.startGame,
-          'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,
-          'options-3': actions.openSettings,
-          'help-4': actions.openHelp,
-        }}
-      />
-    </section>
+    <MainMenuMenu
+      actions={{
+        'start-game-1': actions.startGame,
+        'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,
+        'options-3': actions.openSettings,
+        'help-4': actions.openHelp,
+      }}
+    />
   );
 }
 

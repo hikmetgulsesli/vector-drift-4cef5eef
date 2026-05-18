@@ -14,9 +14,28 @@ export type GameOverResultActionId = "play-again-1" | "main-menu-2" | "button-3-
 
 export interface GameOverResultProps {
   actions?: Partial<Record<GameOverResultActionId, () => void>>;
+  finalScore?: number;
+  timeSurvivedMs?: number;
+  multiplier?: string;
+  isNewHighScore?: boolean;
 }
 
-export function GameOverResult({ actions }: GameOverResultProps) {
+const formatScore = (score = 0) => Math.max(0, Math.floor(score)).toLocaleString();
+
+const formatElapsed = (ms = 0) => {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+};
+
+export function GameOverResult({
+  actions,
+  finalScore = 0,
+  timeSurvivedMs = 0,
+  multiplier = "x1.0",
+  isNewHighScore = false,
+}: GameOverResultProps) {
   return (
     <>
       {/* Background Grid & Scanlines */}
@@ -32,7 +51,7 @@ export function GameOverResult({ actions }: GameOverResultProps) {
       <div className="mb-6 flex justify-center">
       <div className="bg-[#0e1416] border border-primary text-primary px-4 py-2 font-label-sm text-label-sm uppercase shadow-[0_0_8px_#4cd7f6] flex items-center gap-2">
       <Circle  style={{fontVariationSettings: "'FILL' 1"}} aria-hidden={true} focusable="false" />
-                      NEW HIGH SCORE
+                      {isNewHighScore ? "NEW HIGH SCORE" : "RUN COMPLETE"}
                       <Circle  style={{fontVariationSettings: "'FILL' 1"}} aria-hidden={true} focusable="false" />
       </div>
       </div>
@@ -44,17 +63,17 @@ export function GameOverResult({ actions }: GameOverResultProps) {
       {/* Final Score */}
       <div className="text-center border-b border-outline-variant w-full pb-6">
       <p className="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Final Score</p>
-      <p className="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-primary drop-shadow-[0_0_8px_#4cd7f6]">1250</p>
+      <p className="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-primary drop-shadow-[0_0_8px_#4cd7f6]">{formatScore(finalScore)}</p>
       </div>
       {/* Detailed Stats Grid */}
       <div className="grid grid-cols-2 gap-4 w-full text-center">
       <div className="p-4 border border-outline-variant bg-[#0e1416]">
       <p className="font-label-xs text-label-xs text-on-surface-variant uppercase mb-1">Time Survived</p>
-      <p className="font-body-md text-body-md text-on-surface font-mono">01:45</p>
+      <p className="font-body-md text-body-md text-on-surface font-mono">{formatElapsed(timeSurvivedMs)}</p>
       </div>
       <div className="p-4 border border-outline-variant bg-[#0e1416]">
       <p className="font-label-xs text-label-xs text-on-surface-variant uppercase mb-1">Multiplier</p>
-      <p className="font-body-md text-body-md text-secondary font-mono drop-shadow-[0_0_4px_#ffb0cd]">x4.2</p>
+      <p className="font-body-md text-body-md text-secondary font-mono drop-shadow-[0_0_4px_#ffb0cd]">{multiplier}</p>
       </div>
       </div>
       </div>
@@ -72,10 +91,10 @@ export function GameOverResult({ actions }: GameOverResultProps) {
       </div>
       {/* Share */}
       <div className="flex gap-4 items-center">
-      <button className="w-[44px] h-[44px] border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-3-3" onClick={actions?.["button-3-3"]}>
+      <button aria-label="Share result" className="w-[44px] h-[44px] border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-3-3" onClick={actions?.["button-3-3"]}>
       <Circle aria-hidden={true} focusable="false" />
       </button>
-      <button className="w-[44px] h-[44px] border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-4-4" onClick={actions?.["button-4-4"]}>
+      <button aria-label="Save result" className="w-[44px] h-[44px] border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors flex items-center justify-center" type="button" data-action-id="button-4-4" onClick={actions?.["button-4-4"]}>
       <Download aria-hidden={true} focusable="false" />
       </button>
       </div>
