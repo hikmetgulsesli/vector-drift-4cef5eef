@@ -57,6 +57,7 @@ const toSnapshot = (state: GameState): AppSnapshot => ({
   ...state,
   lanes: LANES,
   ...difficultyConfig[state.settings.difficulty],
+  resumeAvailable: state.status === 'paused',
 });
 
 const clampLane = (lane: number): Lane => Math.max(0, Math.min(2, lane)) as Lane;

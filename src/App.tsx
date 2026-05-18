@@ -154,7 +154,7 @@ function ScreenBridge() {
     <MainMenuMenu
       actions={{
         'start-game-1': actions.startGame,
-        'resume-2': state.status === 'paused' ? actions.resumeGame : actions.startGame,
+        'resume-2': state.status === 'paused' ? actions.resumeGame : () => undefined,
         'options-3': actions.openSettings,
         'help-4': actions.openHelp,
       }}

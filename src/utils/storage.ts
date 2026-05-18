@@ -8,12 +8,6 @@ const SOUND_EFFECTS_KEY = 'vector-drift:sound-effects';
 const isDifficulty = (value: string | null | undefined): value is Difficulty =>
   value === 'easy' || value === 'normal' || value === 'hard';
 
-const parseStoredBoolean = (value: string | null | undefined, fallback: boolean) => {
-  if (value === 'true') return true;
-  if (value === 'false') return false;
-  return fallback;
-};
-
 const getStorage = () => {
   if (typeof window === 'undefined') {
     return null;
@@ -51,24 +45,32 @@ export function saveDifficulty(difficulty: Difficulty): void {
   storage.setItem(DIFFICULTY_KEY, difficulty);
 }
 
-export function loadBackgroundMusic(): boolean {
+export function loadBooleanSetting(key: string, fallback: boolean): boolean {
   const storage = getStorage();
-  return parseStoredBoolean(storage?.getItem(BACKGROUND_MUSIC_KEY), true);
+  const value = storage?.getItem(key);
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  return fallback;
 }
 
-export function saveBackgroundMusic(enabled: boolean): void {
+export function saveBooleanSetting(key: string, value: boolean): void {
   const storage = getStorage();
   if (!storage) return;
-  storage.setItem(BACKGROUND_MUSIC_KEY, String(enabled));
+  storage.setItem(key, String(value));
+}
+
+export function loadBackgroundMusic(): boolean {
+  return loadBooleanSetting(BACKGROUND_MUSIC_KEY, true);
+}
+
+export function saveBackgroundMusic(value: boolean): void {
+  saveBooleanSetting(BACKGROUND_MUSIC_KEY, value);
 }
 
 export function loadSoundEffects(): boolean {
-  const storage = getStorage();
-  return parseStoredBoolean(storage?.getItem(SOUND_EFFECTS_KEY), true);
+  return loadBooleanSetting(SOUND_EFFECTS_KEY, true);
 }
 
-export function saveSoundEffects(enabled: boolean): void {
-  const storage = getStorage();
-  if (!storage) return;
-  storage.setItem(SOUND_EFFECTS_KEY, String(enabled));
+export function saveSoundEffects(value: boolean): void {
+  saveBooleanSetting(SOUND_EFFECTS_KEY, value);
 }

@@ -35,6 +35,7 @@ export interface AppSnapshot extends GameState {
   lanes: readonly Lane[];
   speed: number;
   spawnEveryMs: number;
+  resumeAvailable: boolean;
 }
 
 export interface AppActions {
