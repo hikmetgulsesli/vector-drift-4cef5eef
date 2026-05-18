@@ -8,6 +8,7 @@
 // 4. Replace placeholder data with props/state
 
 import { Circle, Menu, Play, RefreshCw } from "lucide-react";
+import { formatResultElapsed, formatResultScore } from "./GameOverResult";
 
 
 export type PauseOverlayOverlayActionId = "resume-1" | "restart-2" | "main-menu-3";
@@ -18,15 +19,6 @@ export interface PauseOverlayOverlayProps {
   elapsedMs?: number;
   difficulty?: string;
 }
-
-const formatScore = (score = 0) => Math.max(0, Math.floor(score)).toLocaleString();
-
-const formatElapsed = (ms = 0) => {
-  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-};
 
 export function PauseOverlayOverlay({
   actions,
@@ -52,7 +44,7 @@ export function PauseOverlayOverlay({
       {/* Header section */}
       <div className="text-center border-b border-primary/30 pb-gutter mb-margin">
       <h1 className="font-display-lg text-display-lg font-bold italic text-primary drop-shadow-[0_0_8px_#4cd7f6] tracking-tighter">PAUSED</h1>
-      <p className="font-label-xs text-label-xs text-on-surface-variant uppercase mt-unit">Score {formatScore(score)} / Time {formatElapsed(elapsedMs)}</p>
+      <p className="font-label-xs text-label-xs text-on-surface-variant uppercase mt-unit">Score {formatResultScore(score)} / Time {formatResultElapsed(elapsedMs)}</p>
       </div>
       {/* Action Buttons Grid */}
       <div className="flex flex-col gap-gutter">

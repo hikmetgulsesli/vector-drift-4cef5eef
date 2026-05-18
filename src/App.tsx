@@ -74,18 +74,37 @@ function ScreenBridge() {
   const { state, actions } = useAppContext();
 
   if (state.screen === 'settings') {
+    const handleSettingsClick = (event: React.MouseEvent<HTMLDivElement>) => {
+      const target = event.target instanceof Element ? event.target.closest('button[aria-label]') : null;
+      if (!target || !event.currentTarget.contains(target)) return;
+
+      const label = target.getAttribute('aria-label')?.toLowerCase() ?? '';
+      const currentSettings = window.app?.state.settings;
+
+      if (label.includes('background music') && currentSettings?.backgroundMusic === state.settings.backgroundMusic) {
+        actions.toggleBackgroundMusic();
+      }
+
+      if (label.includes('sound effects') && currentSettings?.soundEffects === state.settings.soundEffects) {
+        actions.toggleSoundEffects();
+      }
+    };
+
     return (
-      <GameOptionsSettings
-        actions={{
-          'button-1-1': actions.toggleBackgroundMusic,
-          'button-2-2': actions.toggleSoundEffects,
-          'button-3-3': actions.startGame,
-          'easy-4': () => actions.setDifficulty('easy'),
-          'normal-5': () => actions.setDifficulty('normal'),
-          'hard-6': () => actions.setDifficulty('hard'),
-          'main-menu-7': actions.openMenu,
-        }}
-      />
+      <div onClick={handleSettingsClick}>
+        <GameOptionsSettings
+          actions={{
+            'button-1-1': actions.toggleBackgroundMusic,
+            'button-2-2': actions.toggleSoundEffects,
+            'button-3-3': actions.startGame,
+            'easy-4': () => actions.setDifficulty('easy'),
+            'normal-5': () => actions.setDifficulty('normal'),
+            'hard-6': () => actions.setDifficulty('hard'),
+            'main-menu-7': actions.openMenu,
+          }}
+          settings={state.settings}
+        />
+      </div>
     );
   }
 
@@ -158,6 +177,8 @@ function ScreenBridge() {
         'options-3': actions.openSettings,
         'help-4': actions.openHelp,
       }}
+      highScore={state.highScore}
+      resumeAvailable={state.status === 'paused'}
     />
   );
 }
